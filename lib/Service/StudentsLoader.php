@@ -10,7 +10,7 @@ class StudentsLoader{
     }
 
     public function getStudents(){
-        $fetchedStudents = $this->studentsStorage->fetchAllStudents();
+        $fetchedStudents = $this->studentsStorage->fetchAll();
 
         $students = [];
 

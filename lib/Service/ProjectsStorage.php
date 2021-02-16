@@ -1,6 +1,6 @@
 <?php 
 
-class StudentsStorage{
+class ProjectsStorage{
 
     private $pdo;
 
@@ -10,18 +10,18 @@ class StudentsStorage{
     }
 
     /**
-     * Returns array of all students
+     * Returns array of all projects
      *
      * @return array
      */
     public function fetchAll(){
-        $sql = "SELECT * FROM students;";
+        $sql = "SELECT * FROM projects;";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
 
-        $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return $students;
+        return $projects;
     }
 }
