@@ -1,12 +1,14 @@
 <?php
 class Project{
 
+    private $id;
     private $title;
     private $group_count;
     private $max_students;
 
-    public function __construct($title, $group_count, $max_students)
+    public function __construct($id, $title, $group_count, $max_students)
     {
+        $this->id = $id;
         $this->title = $title;
         $this->group_count = $group_count;
         $this->max_students = $max_students;
@@ -34,6 +36,14 @@ class Project{
     public function getMax_students()
     {
         return $this->max_students;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
     }
 }
 

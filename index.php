@@ -8,17 +8,8 @@ $projectsLoader = $serviceContainer->getProjectsLoader();
 $projects = $projectsLoader->getProjects();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <title>Status Page</title>
-</head>
-<body>
+<?php include_once("./header.php"); ?>
+
     <div class="container">
         <h2 class="text-center">Your Projects</h2>
 
@@ -53,7 +44,7 @@ $projects = $projectsLoader->getProjects();
                 <tbody>
                     <?php foreach($projects as $project): ?>
                         <tr>
-                            <td><?php echo $project->getTitle(); ?></td>
+                            <td><a href="<?php echo "project.php?id=" . $project->getId(); ?>"><?php echo $project->getTitle(); ?></a></td>
                             <td><?php echo $project->getGroup_count(); ?></td>
                             <td><?php echo $project->getMax_students(); ?></td>
                         </tr>
@@ -82,7 +73,7 @@ $projects = $projectsLoader->getProjects();
                         </div>
 
                         <div class="form-group">
-                            <input class="form-control btn btn-lg btn-primary" style="" type="submit" name="submit" value="Add Project">
+                            <input class="form-control btn btn-lg btn-primary" type="submit" name="submit" value="Add Project">
                         </div>
                     </form>
                 </div>

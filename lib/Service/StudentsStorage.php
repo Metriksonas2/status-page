@@ -24,4 +24,19 @@ class StudentsStorage{
 
         return $students;
     }
+
+    public function fetchProjectStudents($project_id){
+        $sql = "SELECT * FROM students WHERE project_id = :project_id;";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(":project_id", $project_id, PDO::PARAM_INT);
+        
+        if($stmt->execute()){
+            $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $students;
+        }
+        else{
+            echo "Fetch Error: " . $stmt->error;
+        }
+    }
 }

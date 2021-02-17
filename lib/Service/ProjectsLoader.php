@@ -24,8 +24,20 @@ class ProjectsLoader{
         return $projects;
     }
 
+    public function getProjectById($id){
+        $singleProject = $this->projectsStorage->fetchSingle($id);
+
+        return $this->convertProjectToObject($singleProject);
+    }
+
+    /**
+     * Converts array project object to Project object
+     *
+     * @param array $project
+     * @return Project
+     */
     private function convertProjectToObject($project){
-        $newProject = new Project($project["title"], $project["groups_count"], $project["max_students"]);
+        $newProject = new Project($project["id"], $project["title"], $project["groups_count"], $project["max_students"]);
 
         return $newProject;
     }
