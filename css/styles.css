@@ -24,3 +24,8 @@
 .bot-jumbotron{
     padding-bottom: 1.5rem !important;
 }
+
+.group{
+    width: 300px;
+    border: 1px solid black;
+}

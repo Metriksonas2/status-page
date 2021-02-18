@@ -2,10 +2,15 @@
 
 class ServiceContainer{
     private $pdo;
+
     private $studentsLoader;
     private $studentsStorage;
+
     private $projectsLoader;
     private $projectsStorage;
+
+    private $groupsLoader;
+    private $groupsStorage;
 
     private $configuration;
 
@@ -59,5 +64,21 @@ class ServiceContainer{
         }
 
         return $this->projectsStorage;
+    }
+
+    public function getGroupsLoader(){
+        if($this->groupsLoader === null){
+            $this->groupsLoader = new GroupsLoader($this->getGroupsStorage());
+        }
+
+        return $this->groupsLoader;
+    }
+
+    private function getGroupsStorage(){
+        if($this->groupsStorage === null){
+            $this->groupsStorage = new GroupsStorage($this->getPDO());
+        }
+
+        return $this->groupsStorage;
     }
 }
