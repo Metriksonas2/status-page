@@ -1,12 +1,6 @@
-Vue.component("modal", {
-    template: "#modal-template"
-});
-
-var app = new Vue({
-    el: "#app",
+var edit = new Vue({
+    el: "#edit",
     data: {
-        showModal: false,
-
         editMode: false,
         groupsEditMode: {},
         groupsCount: 0,
@@ -15,7 +9,7 @@ var app = new Vue({
     methods:{
         getId: function (e) { 
             console.log(e.target.getAttribute("name"));
-            console.log(document.querySelectorAll('#app .card').length);
+            console.log(document.querySelectorAll('#edit .card').length);
         },
         fillGroupsEditMode: function (e) { 
             var groupName = parseInt(e.target.getAttribute("name"));
@@ -31,7 +25,7 @@ var app = new Vue({
         }
     },
     created: function () { 
-        this.groupsCount = document.querySelectorAll('#app .card').length;
+        this.groupsCount = document.querySelectorAll('#edit .card').length;
         
         this.firstGroupId = parseInt(document.getElementById("group").getAttribute("name"));
 

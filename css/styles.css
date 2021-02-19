@@ -29,3 +29,7 @@
     width: 300px;
     border: 1px solid black;
 }
+
+.animate{
+    transition: 0.7s ease-in;
+}

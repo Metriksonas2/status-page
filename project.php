@@ -36,6 +36,7 @@ else{
             </div>
         </div>
 
+        <!-- Students Section -->
         <h2 class="text-center mt-2 my-font"> Project Students</h2>
         <div class="row">
             <?php if($studentsLoader->getProjectStudentsCount() == 0): ?>
@@ -62,7 +63,8 @@ else{
                         <tr>
                             <th style="width: 44%">Student</th>
                             <th style="width: 28%">Group</th>
-                            <th style="width: 28%">Actions</th>
+                            <th style="width: 7%">Actions</th>
+                            <th style="width: 21%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,7 +72,8 @@ else{
                             <tr>
                                 <td><?php echo strval($student); ?></td>
                                 <td><?php echo $student->getGroup() != null ? $student->getGroup() : "No group" ?></td>
-                                <td>Delete</td>
+                                <td><a href="">Delete</a></td>
+                                <td><a href="">Edit Group</a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -92,33 +95,51 @@ else{
                 </modal> -->
             </div>
         </div>
-
+        <!-- End of Students Section -->
+        
         <hr>
 
         <!-- Groups Section -->
         <h2 class="text-center mt-2 my-font"> Project Groups</h2>
-        <div class="row">
+        <div class="row" id="edit">
             <?php foreach($projectGroups as $group): ?>
                 <div class="col-md-6 mt-2 mb-2">
+
                     <div class="card">  
-                        <div class="card-header">
+
+                        <div class="card-header" style="display: flex; justify-content: space-between;">
                             <h5><?php echo $group->getName(); ?></h5>
+                            <a href="#" @click.prevent="fillGroupsEditMode($event)"><i class="fas fa-edit pt-2" id="group" name="<?php echo $group->getId(); ?>"></i></a>
                         </div>
+
                         <div class="card-body">
                             <?php for($j = 1; $j <= $project->getMax_students(); $j++): ?>
-                                <select class="form-control mb-3" name="group-<?php echo $j; ?>" id="group-<?php echo $j; ?>">
-                                    <option value="#">-</option>
-                                    <?php foreach($students as $student): ?>
-                                        <option value=""><?php echo $student; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <div style="display: flex; flex-direction: row;">
+                                    <template v-if="groupsEditMode['group_<?php echo $group->getId(); ?>']">
+                                        <label for="" class="form-control"><span>Beleka</span></label>
+                                        <a href="#" @click.prevent><i class="fas fa-minus-circle" style="margin-left: 5px; padding-left: 5px; padding-top: 13px; text-align: right; color: red"></i>
+                                    </template>
+                                    <template v-else>
+                                        <label for="" class="form-control"></label>
+                                    </template>
+                                </div>
                             <?php endfor; ?>
                         </div>
+
                     </div>
+
                 </div>
             <?php endforeach; ?>
+        </div>
+        <!-- End of Students Section -->
     </div>
-
+    <script type="text/javascript">
+        // window.onload = function(){
+        //     setTimeout(() => {
+        //         document.location.reload(true);
+        //     }, 10000);
+        // }
+    </script>
     <script type="text/x-template" id="modal-template">
         <transition name="modal">
             <div class="modal-mask">
@@ -172,6 +193,7 @@ else{
             </div>
         </transition>
     </script>
+    <!-- <script src="./js/edit.js"></script> -->
     <script src="./js/script.js"></script>
 </body>
 </html>

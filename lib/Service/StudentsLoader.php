@@ -29,7 +29,7 @@ class StudentsLoader{
 
     
     private function convertStudentToObject($student){
-        $newStudent = new Student($student["first_name"], $student["last_name"]);
+        $newStudent = new Student($student["id"], $student["first_name"], $student["last_name"]);
 
         return $newStudent;
     }

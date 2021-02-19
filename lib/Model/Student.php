@@ -1,12 +1,15 @@
 <?php
+
 class Student{
 
+    private $id;
     private $first_name;
     private $last_name;
     private $group;
 
-    public function __construct($first_name, $last_name)
+    public function __construct($id, $first_name, $last_name)
     {
+        $this->id = $id;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
         $this->group = null;
@@ -74,6 +77,14 @@ class Student{
         $this->group = $group;
 
         return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
     }
 }
 

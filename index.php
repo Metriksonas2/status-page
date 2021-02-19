@@ -12,7 +12,7 @@ $projects = $projectsLoader->getProjects();
 
     <div class="container" id="app">
         <h2 class="text-center">Your Projects</h2>
-        <div class="row">
+        <div class="row" id="group">
             <?php if($projectsLoader->getCount() == 0): ?>
                 <table class="table">
                     <thead class="thead-light">
