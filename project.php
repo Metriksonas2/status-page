@@ -9,6 +9,7 @@ if(isset($_GET["id"])){
 
     $projectsLoader = $serviceContainer->getProjectsLoader();
     $project = $projectsLoader->getProjectById($_GET["id"]);
+    $maxStudents = $project->getMax_students();
 
     // Check if this project exists
 
@@ -32,7 +33,7 @@ else{
             <div class="container">
                 <h1 class="display-4 title-border-bottom"><?php echo $project->getTitle(); ?></h1>
                 <p class="lead mt-3">Number of groups: <strong style="font-size: 1.5rem"><?php echo $project->getGroup_count(); ?></strong></p>
-                <p class="lead">Maximum amount of students in group: <strong style="font-size: 1.5rem"><?php echo $project->getMax_students(); ?></strong></p>
+                <p class="lead">Maximum amount of students in group: <strong style="font-size: 1.5rem"><?php echo $maxStudents; ?></strong></p>
             </div>
         </div>
 
@@ -71,7 +72,7 @@ else{
                         <?php foreach($students as $student): ?>
                             <tr>
                                 <td><?php echo strval($student); ?></td>
-                                <td><?php echo $student->getGroup() != null ? $student->getGroup() : "No group" ?></td>
+                                <td><?php echo $student->getGroup(); ?></td>
                                 <td><a href="">Delete</a></td>
                                 <td><a href="">Edit Group</a></td>
                             </tr>
@@ -83,16 +84,12 @@ else{
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <button class="form-control btn btn-lg btn-primary" id="show-modal" @click="showModal = true">Add Student</button>
+                <button class="form-control btn btn-lg btn-primary" id="show-modal" @click="showModal = true">Add new student</button>
                 <modal v-if="showModal" @close="showModal = false">
-                    <h3 slot="header">Add Student</h3>
+                    <h3 slot="header">Add new student</h3>
                 </modal>
             </div>
             <div class="col-md-4">
-                <!-- <button class="form-control btn btn-lg btn-primary" id="show-modal" @click="showModal = true">Add Student</button>
-                <modal v-if="showModal" @close="showModal = false">
-                    <h3 slot="header">Add Student</h3>
-                </modal> -->
             </div>
         </div>
         <!-- End of Students Section -->
@@ -105,24 +102,63 @@ else{
             <?php foreach($projectGroups as $group): ?>
                 <div class="col-md-6 mt-2 mb-2">
 
-                    <div class="card">  
+                    <div class="card" id="<?php echo $group->getId(); ?>">  
 
                         <div class="card-header" style="display: flex; justify-content: space-between;">
-                            <h5><?php echo $group->getName(); ?></h5>
-                            <a href="#" @click.prevent="fillGroupsEditMode($event)"><i class="fas fa-edit pt-2" id="group" name="<?php echo $group->getId(); ?>"></i></a>
+                            <template v-if="groupsEditMode['group_<?php echo $group->getId(); ?>']">
+                                <input class="form-control" type="text" name="groupName" id="" placeholder="<?php echo $group->getName(); ?>">    
+                            </template>
+                            <template v-else>
+                                <h5><?php echo $group->getName(); ?></h5>
+                            </template>
+                            <a href="#" @click.prevent="fillGroupsEditMode($event)"><i class="fas fa-edit ml-2 pt-2" id="group" name="<?php echo $group->getId(); ?>"></i></a>
                         </div>
 
                         <div class="card-body">
-                            <?php for($j = 1; $j <= $project->getMax_students(); $j++): ?>
+                            <?php 
+                                $groupStudents = $studentsLoader->getGroupStudents($group->getId()); 
+                                $groupStudentsCount = count($groupStudents);
+                                $i = 0;
+                            ?>
+
+                            <?php for($j = 0; $j < $maxStudents; $j++): ?>
                                 <div style="display: flex; flex-direction: row;">
+                                    <!-- If clicked on edit -->
                                     <template v-if="groupsEditMode['group_<?php echo $group->getId(); ?>']">
-                                        <label for="" class="form-control"><span>Beleka</span></label>
-                                        <a href="#" @click.prevent><i class="fas fa-minus-circle" style="margin-left: 5px; padding-left: 5px; padding-top: 13px; text-align: right; color: red"></i>
+                                        <?php if($i < $groupStudentsCount): ?>
+                                            <form action="includes/remove_student_from_group.inc.php" method="post" id="delete_<?php echo $group->getId() . "_" . $groupStudents[$i]->getId(); ?>" style="display: flex; flex-direction: row; width: 100%">
+                                                <label for="" class="form-control mb-3"><span><?php echo $groupStudents[$i]; ?></span></label>
+
+                                                <a role="button" href="javascript:void(0)" onclick="document.getElementById('delete_<?php echo $group->getId() . "_" . $groupStudents[$i]->getId(); ?>').submit()"><i class="fas fa-minus-circle" style="margin-left: 5px; padding-left: 5px; padding-top: 13px; text-align: right; color: red"></i></a>
+
+                                                <input type="hidden" name="student_id" value="<?php echo $groupStudents[$i]->getId(); ?>" />
+                                                <input type="hidden" name="group_id" value="<?php echo $group->getId(); ?>" />
+                                                <input type="hidden" name="project_id" value="<?php echo $_GET["id"]; ?>" />
+                                            </form>
+                                        <?php else: ?>
+                                            <label for="" class="form-control mb-3"><span>-</span></label>
+                                        <?php endif; ?>
                                     </template>
+
+                                    <!-- If not clicked on edit -->
                                     <template v-else>
-                                        <label for="" class="form-control"></label>
+                                        <?php if($i < $groupStudentsCount): ?>
+                                            <label class="form-control mb-3"><span><?php echo $groupStudents[$i]; ?></span></label>
+                                        <?php else: ?>
+                                            <form action="includes/add_student_to_project.inc.php" method="post" style="width: 100%">
+                                                <select class="form-control mb-3" name="student_id" onchange="this.form.submit()">
+                                                    <option value="#">-</option>
+                                                    <?php foreach($students as $student): ?>
+                                                        <option value="<?php echo $student->getId(); ?>"><?php echo $student; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <input type="hidden" name="group_id" value="<?php echo $group->getId(); ?>" />
+                                                <input type="hidden" name="project_id" value="<?php echo $_GET["id"]; ?>" />
+                                            </form>
+                                        <?php endif; ?>
                                     </template>
                                 </div>
+                                <?php $i++; ?>
                             <?php endfor; ?>
                         </div>
 
@@ -182,9 +218,6 @@ else{
                                     <slot name="footer">
                                         <button class="modal-default-button form-control btn btn-lg btn-success" name="submit">Add</button>
                                     </slot>
-                                    <!-- <div class="form-group">
-                                        <input class="form-control btn btn-lg btn-primary" type="submit" name="submit" value="Add ">
-                                    </div> -->
                                 </div>
                             </form>
                         </div>
@@ -193,7 +226,6 @@ else{
             </div>
         </transition>
     </script>
-    <!-- <script src="./js/edit.js"></script> -->
     <script src="./js/script.js"></script>
 </body>
 </html>

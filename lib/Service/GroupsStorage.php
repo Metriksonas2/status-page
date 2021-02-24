@@ -25,6 +25,24 @@ class GroupsStorage{
         return $groups;
     }
 
+    public function fetchSingle($group_id){
+        $sql = "SELECT * FROM groups WHERE id = :group_id;";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->bindParam(":group_id", $group_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $group = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($stmt->rowCount() > 0){
+            return $group;
+        }
+
+        return null;
+    }
+
     public function fetchProjectGroups($project_id){
         $sql = "SELECT * FROM groups WHERE project_id = :project_id;";
 

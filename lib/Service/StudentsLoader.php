@@ -1,5 +1,7 @@
 <?php 
 
+require_once(__DIR__ . "/../../bootstrap.php");
+
 class StudentsLoader{
 
     private $studentsStorage;
@@ -27,9 +29,27 @@ class StudentsLoader{
         return $this->addStudentsToArray($fetchedStudents);
     }
 
+    public function getGroupStudents($group_id){
+        $fetchedStudents = $this->studentsStorage->fetchGroupStudents($group_id);
+
+        return $this->addStudentsToArray($fetchedStudents);
+    }
+
     
     private function convertStudentToObject($student){
-        $newStudent = new Student($student["id"], $student["first_name"], $student["last_name"]);
+        global $configuration;
+        $serviceContainer = new ServiceContainer($configuration);
+        $groupsLoader = $serviceContainer->getGroupsLoader();
+
+        $group = $groupsLoader->getGroup($student["group_id"]);
+        if($group !== null){
+            $groupName = $group->getName();
+        }
+        else{
+            $groupName = null;
+        }
+        
+        $newStudent = new Student($student["id"], $student["first_name"], $student["last_name"], $groupName);
 
         return $newStudent;
     }

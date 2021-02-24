@@ -7,12 +7,13 @@ class Student{
     private $last_name;
     private $group;
 
-    public function __construct($id, $first_name, $last_name)
+    public function __construct($id, $first_name, $last_name, $group)
     {
         $this->id = $id;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
-        $this->group = null;
+        
+        $this->setGroup($group);
     }
 
     public function __toString(){
@@ -72,9 +73,14 @@ class Student{
      *
      * @return  self
      */ 
-    public function setGroup($group)
+    private function setGroup($group)
     {
-        $this->group = $group;
+        if($group !== null){
+            $this->group = $group;
+        }
+        else{
+            $this->group = "No group";
+        }
 
         return $this;
     }

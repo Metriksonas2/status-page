@@ -27,10 +27,13 @@ class GroupsLoader{
         return $this->addGroupsToArray($fetchedGroups);
     }
 
-    public function getGroupId($id){
+    public function getGroup($id){
         $singleGroup = $this->groupsStorage->fetchSingle($id);
-
-        return $this->convertGroupToObject($singleGroup);
+        
+        if($singleGroup !== null){
+            return $this->convertGroupToObject($singleGroup);
+        }
+        return $singleGroup;
     }
 
     public function addGroups($project_id, $groups_count){
