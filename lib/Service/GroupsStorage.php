@@ -58,6 +58,22 @@ class GroupsStorage{
         }
     }
 
+    public function fetchNotFullProjectGroups($project_id, $max_students){
+        $sql = "SELECT * FROM groups WHERE project_id = :project_id AND student_count < :max_students";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(":project_id", $project_id, PDO::PARAM_INT);
+        $stmt->bindParam(":max_students", $max_students, PDO::PARAM_INT);
+        
+        if($stmt->execute()){
+            $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $groups;
+        }
+        else{
+            echo "Fetch Error: " . $stmt->error;
+        }
+    }
+
     public function addGroups($project_id, $groups_count){
         $sql = "";
 

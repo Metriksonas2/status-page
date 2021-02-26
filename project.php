@@ -19,6 +19,7 @@ if(isset($_GET["id"])){
 
     $groupsLoader = $serviceContainer->getGroupsLoader();
     $projectGroups = $groupsLoader->getProjectGroups($_GET["id"]);
+    $notFullProjectGroups = $groupsLoader->getNotFullProjectGroups($_GET["id"], $maxStudents);
 }
 else{
     header("Location: ./index.php?err=nosuchproject");
@@ -63,9 +64,8 @@ else{
                     <thead class="thead-light">
                         <tr>
                             <th style="width: 44%">Student</th>
-                            <th style="width: 28%">Group</th>
-                            <th style="width: 7%">Actions</th>
-                            <th style="width: 21%"></th>
+                            <th style="width: 30%">Group</th>
+                            <th style="width: 26%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,8 +73,14 @@ else{
                             <tr>
                                 <td><?php echo strval($student); ?></td>
                                 <td><?php echo $student->getGroup(); ?></td>
-                                <td><a href="">Delete</a></td>
-                                <td><a href="">Edit Group</a></td>
+                                <td>
+                                    <form action="includes/delete_student.inc.php" method="post" id="student_<?php echo $student->getId(); ?>">
+                                        <a role="button" href="javascript:void(0)" onclick="document.getElementById('student_<?php echo $student->getId(); ?>').submit()">Delete</a>
+                                        <input type="hidden" name="student_id" value="<?php echo $student->getId(); ?>" />
+                                        <input type="hidden" name="project_id" value="<?php echo $_GET["id"]; ?>" />
+                                        <input type="hidden" name="group_id" value="<?php echo $student->getGroup_id(); ?>" />
+                                    </form>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -100,11 +106,14 @@ else{
         <h2 class="text-center mt-2 my-font"> Project Groups</h2>
         <div class="row" id="edit">
             <?php foreach($projectGroups as $group): ?>
+                <?php 
+                    $groupIsFull = $group->getStudent_count() === $maxStudents;    
+                ?>
                 <div class="col-md-6 mt-2 mb-2">
 
-                    <div class="card" id="<?php echo $group->getId(); ?>">  
+                    <div class="card <?php if($groupIsFull) echo 'full-group'; ?>" id="<?php echo $group->getId(); ?>">  
 
-                        <div class="card-header" style="display: flex; justify-content: space-between;">
+                        <div class="card-header my-card-header <?php if($groupIsFull) echo 'full-group-card-header'; ?>">
                             <template v-if="groupsEditMode['group_<?php echo $group->getId(); ?>']">
                                 <input class="form-control" type="text" name="groupName" id="" placeholder="<?php echo $group->getName(); ?>">    
                             </template>
@@ -118,18 +127,20 @@ else{
                             <?php 
                                 $groupStudents = $studentsLoader->getGroupStudents($group->getId()); 
                                 $groupStudentsCount = count($groupStudents);
+
+                                $notGroupStudents = $studentsLoader->getNotGroupStudents($_GET["id"], $group->getId());
                                 $i = 0;
                             ?>
 
                             <?php for($j = 0; $j < $maxStudents; $j++): ?>
-                                <div style="display: flex; flex-direction: row;">
+                                <div class="my-card-body">
                                     <!-- If clicked on edit -->
                                     <template v-if="groupsEditMode['group_<?php echo $group->getId(); ?>']">
                                         <?php if($i < $groupStudentsCount): ?>
-                                            <form action="includes/remove_student_from_group.inc.php" method="post" id="delete_<?php echo $group->getId() . "_" . $groupStudents[$i]->getId(); ?>" style="display: flex; flex-direction: row; width: 100%">
+                                            <form action="includes/remove_student_from_group.inc.php" method="post" id="remove_<?php echo $group->getId() . "_" . $groupStudents[$i]->getId(); ?>" class="my-card-body" style="width: 100%">
                                                 <label for="" class="form-control mb-3"><span><?php echo $groupStudents[$i]; ?></span></label>
 
-                                                <a role="button" href="javascript:void(0)" onclick="document.getElementById('delete_<?php echo $group->getId() . "_" . $groupStudents[$i]->getId(); ?>').submit()"><i class="fas fa-minus-circle" style="margin-left: 5px; padding-left: 5px; padding-top: 13px; text-align: right; color: red"></i></a>
+                                                <a role="button" href="javascript:void(0)" onclick="document.getElementById('remove_<?php echo $group->getId() . "_" . $groupStudents[$i]->getId(); ?>').submit()"><i class="fas fa-minus-circle remove-from-group-btn"></i></a>
 
                                                 <input type="hidden" name="student_id" value="<?php echo $groupStudents[$i]->getId(); ?>" />
                                                 <input type="hidden" name="group_id" value="<?php echo $group->getId(); ?>" />
@@ -145,13 +156,14 @@ else{
                                         <?php if($i < $groupStudentsCount): ?>
                                             <label class="form-control mb-3"><span><?php echo $groupStudents[$i]; ?></span></label>
                                         <?php else: ?>
-                                            <form action="includes/add_student_to_project.inc.php" method="post" style="width: 100%">
+                                            <form action="includes/add_student_to_group.inc.php" method="post" style="width: 100%">
                                                 <select class="form-control mb-3" name="student_id" onchange="this.form.submit()">
                                                     <option value="#">-</option>
-                                                    <?php foreach($students as $student): ?>
+                                                    <?php foreach($notGroupStudents as $student): ?>
                                                         <option value="<?php echo $student->getId(); ?>"><?php echo $student; ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
+
                                                 <input type="hidden" name="group_id" value="<?php echo $group->getId(); ?>" />
                                                 <input type="hidden" name="project_id" value="<?php echo $_GET["id"]; ?>" />
                                             </form>
@@ -160,6 +172,10 @@ else{
                                 </div>
                                 <?php $i++; ?>
                             <?php endfor; ?>
+
+                            <?php if($groupIsFull): ?>
+                                <div class="full-group-msg"><i class="fas fa-bell" style="font-size: 1.5rem;"></i> <strong>Group is full</strong></div>
+                            <?php endif; ?>
                         </div>
 
                     </div>
@@ -207,6 +223,9 @@ else{
                                             <label for="group">Group</label>
                                             <select class="form-control" name="group" id="group">
                                                 <option value="">None</option>
+                                                <?php foreach($notFullProjectGroups as $group): ?>
+                                                    <option value="<?php echo $group->getId(); ?>"><?php echo $group->getName(); ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
 

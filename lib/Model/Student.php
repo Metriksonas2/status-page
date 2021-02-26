@@ -5,15 +5,16 @@ class Student{
     private $id;
     private $first_name;
     private $last_name;
+    private $group_id;
     private $group;
 
-    public function __construct($id, $first_name, $last_name, $group)
+    public function __construct($id, $first_name, $last_name, $group_id, $group)
     {
         $this->id = $id;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
-        
-        $this->setGroup($group);
+        $this->group_id = $group_id;
+        $this->group = $group;
     }
 
     public function __toString(){
@@ -73,14 +74,9 @@ class Student{
      *
      * @return  self
      */ 
-    private function setGroup($group)
+    public function setGroup($group)
     {
-        if($group !== null){
-            $this->group = $group;
-        }
-        else{
-            $this->group = "No group";
-        }
+        $this->group = $group;
 
         return $this;
     }
@@ -91,6 +87,14 @@ class Student{
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get the value of groupId
+     */ 
+    public function getGroup_id()
+    {
+        return $this->group_id;
     }
 }
 

@@ -25,7 +25,52 @@
     padding-bottom: 1.5rem !important;
 }
 
+.my-card-header{
+    display: flex; 
+    justify-content: space-between;
+}
+
+.my-card-body{
+    display: flex;
+    flex-direction: row;
+}
+
+.remove-from-group-btn{
+    margin-left: 5px; 
+    padding-left: 5px; 
+    padding-top: 13px; 
+    text-align: right; 
+    color: red
+}
+
 .group{
     width: 300px;
     border: 1px solid black;
+}
+
+.full-group{
+    border: 1px solid #0069d9a1 !important;
+}
+
+.full-group-msg{
+    text-align: center; 
+    color: #0069d9a1;
+    /* color: red; */
+}
+
+.full-group-card-header{
+    background-color: #0069d9a1 !important; 
+    color: white;
+}
+
+.full-group-card-header > a{
+    text-decoration: none !important;
+}
+
+.full-group-card-header > a > i{
+    color: #ffffff;
+}
+
+.full-group-card-header > a > i:hover{
+    color: #dfd7d7;
 }

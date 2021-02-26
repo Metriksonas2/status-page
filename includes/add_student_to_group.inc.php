@@ -10,8 +10,10 @@ if(isset($_POST["group_id"])){
     $student_id = $_POST["student_id"];
     $project_id = $_POST["project_id"];
 
-    $sql = "INSERT INTO student_in_group (group_id, student_id) VALUES (:group_id, :student_id);
-            UPDATE students SET group_id = :group_id WHERE id = :student_id;";
+    $sql = "SET @PreviousGroupID = (SELECT group_id FROM students WHERE id = :student_id);
+            UPDATE students SET group_id = :group_id WHERE id = :student_id;
+            UPDATE groups SET student_count = student_count + 1 WHERE id = :group_id;
+            UPDATE groups SET student_count = student_count - 1 WHERE id = @PreviousGroupID;";
     
     if($stmt = $pdo->prepare($sql)){
 

@@ -5,12 +5,14 @@ class Group{
     private $id;
     private $project_id;
     private $name;
+    private $student_count;
 
-    public function __construct($id, $project_id, $name)
+    public function __construct($id, $project_id, $name, $student_count)
     {
         $this->id = $id;
         $this->project_id = $project_id;
         $this->name = $name;
+        $this->student_count = $student_count;
     }
 
     /**
@@ -35,5 +37,13 @@ class Group{
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get the value of student_count
+     */ 
+    public function getStudent_count()
+    {
+        return $this->student_count;
     }
 }

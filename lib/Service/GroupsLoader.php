@@ -27,6 +27,12 @@ class GroupsLoader{
         return $this->addGroupsToArray($fetchedGroups);
     }
 
+    public function getNotFullProjectGroups($project_id, $max_students){
+        $fetchedGroups = $this->groupsStorage->fetchNotFullProjectGroups($project_id, $max_students);
+
+        return $this->addGroupsToArray($fetchedGroups);
+    }
+
     public function getGroup($id){
         $singleGroup = $this->groupsStorage->fetchSingle($id);
         
@@ -57,7 +63,7 @@ class GroupsLoader{
      * @return Group
      */
     private function convertGroupToObject($group){
-        $newGroup = new Group($group["id"], $group["project_id"], $group["name"]);
+        $newGroup = new Group($group["id"], $group["project_id"], $group["name"], $group["student_count"]);
 
         return $newGroup;
     }
