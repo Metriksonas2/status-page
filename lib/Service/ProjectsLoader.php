@@ -2,6 +2,8 @@
 
 class ProjectsLoader extends Loader{
 
+    private $projectsCount;
+    
     public function __construct(ProjectsStorage $projectsStorage)
     {
         parent::__construct($projectsStorage);

@@ -50,8 +50,8 @@ class StudentsLoader extends Loader{
         return $this->storage->removeStudentFromGroup($student_id, $group_id);
     }
 
-    public function deleteStudentFromProject($project_id, $group_id){
-        return $this->storage->deleteStudent($project_id, $group_id);
+    public function deleteStudentFromProject($student_id, $group_id){
+        return $this->storage->deleteStudent($student_id, $group_id);
     }
 
     public function studentExists($first_name, $last_name, $project_id){

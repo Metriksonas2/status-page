@@ -118,7 +118,7 @@ class StudentsStorage extends Storage{
             try {
                 $stmt->execute();
 
-                return true;
+                return $this->pdo->lastInsertId();
             } 
             catch (PDOException $e) {
                 die("Fetch Error: " . $e->getMessage());
