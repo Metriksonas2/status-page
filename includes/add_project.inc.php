@@ -12,9 +12,6 @@ if(isset($_POST["submit"])){
     $max_students = $_POST["max_students"];
 
     $sql = "INSERT INTO projects (title, groups_count, max_students) VALUES (:title, :groups_count, :max_students);";
-            // SELECT id AS lastId FROM projects WHERE id = @@Identity;";
-    // INSERT INTO projects (title, groups_count, max_students) VALUES ("Test", 6, 3);
-    // SELECT id AS LastID FROM projects WHERE id = @@Identity;
     
     if($stmt = $pdo->prepare($sql)){
 
@@ -27,7 +24,7 @@ if(isset($_POST["submit"])){
             $project_id = intval($pdo->lastInsertId());
 
             $groupsLoader->addGroups($project_id, $groups_count);
-            header("location: ../index.php?msg=projectadded");
+            header("location: ../index.php?success=" . MessageHandler::SUCCESS_PROJECT_ADDED);
         }
         else{
             echo "Something went wrong. Please try again later.";

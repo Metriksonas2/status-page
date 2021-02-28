@@ -95,4 +95,23 @@ class StudentsStorage{
             }
         }
     }
+
+    public function checkIfStudentExists($first_name, $last_name, $project_id){
+        $sql = "SELECT * FROM students WHERE first_name = :first_name AND last_name = :last_name AND project_id = :project_id;";
+
+        if($stmt = $this->pdo->prepare($sql)){
+
+            $stmt->bindParam(":first_name", $first_name, PDO::PARAM_INT);
+            $stmt->bindParam(":last_name", $last_name, PDO::PARAM_INT);
+            $stmt->bindParam(":project_id", $project_id, PDO::PARAM_INT);
+
+            try {
+                $stmt->execute();
+                
+                return $stmt->rowCount() > 0;
+            } catch (PDOException $e) {
+                die("Fetch Error: " . $e->getMessage());
+            }
+        }
+    }
 }

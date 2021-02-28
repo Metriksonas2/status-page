@@ -4,6 +4,7 @@ require_once("../bootstrap.php");
 
 $serviceContainer = new ServiceContainer($configuration);
 $pdo = $serviceContainer->getPDO();
+$studentsLoader = $serviceContainer->getStudentsLoader();
 
 if(isset($_POST["submit"])){
     $first_name = trim($_POST["first_name"]);
@@ -11,7 +12,7 @@ if(isset($_POST["submit"])){
     $in_group = !empty($_POST["group"]);
     $project_id = $_POST["project_id"];
 
-    if((isset($first_name) && !empty($first_name)) && (isset($last_name) && !empty($last_name))){
+    if(!$studentsLoader->studentExists($first_name, $last_name, $project_id)){
 
         if($in_group){
 
@@ -34,7 +35,7 @@ if(isset($_POST["submit"])){
             }
 
             if($stmt->execute()){
-                header("location: ../project.php?id=" . $project_id);
+                header("location: ../project.php?id=" . $project_id . "&success=" . MessageHandler::SUCCESS_STUDENT_ADDED);
             }
             else{
                 echo "Something went wrong. Please try again later.";
@@ -44,6 +45,6 @@ if(isset($_POST["submit"])){
         }   
     }
     else{
-        header("Location: ../index.php?err=emptyfield");
+        header("location: ../project.php?id=" . $project_id . "&err=" . MessageHandler::ERR_STUDENT_EXISTS);
     }
 }

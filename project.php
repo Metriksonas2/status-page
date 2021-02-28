@@ -4,25 +4,27 @@
 
 if(isset($_GET["id"])){
     
+    $project_id = $_GET["id"];
     $serviceContainer = new ServiceContainer($configuration);
-    $pdo = $serviceContainer->getPDO();
-
     $projectsLoader = $serviceContainer->getProjectsLoader();
-    $project = $projectsLoader->getProjectById($_GET["id"]);
-    $maxStudents = $project->getMax_students();
 
-    // Check if this project exists
+    if($projectsLoader->projectExists($project_id)){
+        $project = $projectsLoader->getProjectById($project_id);
+        $maxStudents = $project->getMax_students();
 
+        $studentsLoader = $serviceContainer->getStudentsLoader();
+        $students = $studentsLoader->getProjectStudents($project_id);
 
-    $studentsLoader = $serviceContainer->getStudentsLoader();
-    $students = $studentsLoader->getProjectStudents($_GET["id"]);
-
-    $groupsLoader = $serviceContainer->getGroupsLoader();
-    $projectGroups = $groupsLoader->getProjectGroups($_GET["id"]);
-    $notFullProjectGroups = $groupsLoader->getNotFullProjectGroups($_GET["id"], $maxStudents);
+        $groupsLoader = $serviceContainer->getGroupsLoader();
+        $projectGroups = $groupsLoader->getProjectGroups($project_id);
+        $notFullProjectGroups = $groupsLoader->getNotFullProjectGroups($project_id, $maxStudents);
+    }
+    else{
+        header("Location: ./index.php?err=" . MessageHandler::ERR_NO_SUCH_PROJECT);
+    }
 }
 else{
-    header("Location: ./index.php?err=nosuchproject");
+    header("Location: ./index.php?err=" . MessageHandler::ERR_NO_PROJECT_CHOSEN);
 }
 
 ?>
@@ -39,54 +41,25 @@ else{
         </div>
 
         <!-- Students Section -->
-        <h2 class="text-center mt-2 my-font"> Project Students</h2>
-        <div class="row">
-            <?php if($studentsLoader->getProjectStudentsCount() == 0): ?>
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th style="width: 44%">Student</th>
-                            <th style="width: 28%">Group</th>
-                            <th style="width: 28%">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <h3 class="col-md-12 text-center mt-4 mb-4" style="color: green">Add students to your project!</h3>
-            <?php else: ?>
-                <table class="table mt-2">
-                    <thead class="thead-light">
-                        <tr>
-                            <th style="width: 44%">Student</th>
-                            <th style="width: 30%">Group</th>
-                            <th style="width: 26%">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($students as $student): ?>
-                            <tr>
-                                <td><?php echo strval($student); ?></td>
-                                <td><?php echo $student->getGroup(); ?></td>
-                                <td>
-                                    <form action="includes/delete_student.inc.php" method="post" id="student_<?php echo $student->getId(); ?>">
-                                        <a role="button" href="javascript:void(0)" onclick="document.getElementById('student_<?php echo $student->getId(); ?>').submit()">Delete</a>
-                                        <input type="hidden" name="student_id" value="<?php echo $student->getId(); ?>" />
-                                        <input type="hidden" name="project_id" value="<?php echo $_GET["id"]; ?>" />
-                                        <input type="hidden" name="group_id" value="<?php echo $student->getGroup_id(); ?>" />
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
-        </div>
+        
+        <?php include_once(__DIR__ . "/project-page/project_students.php"); ?>
+
+        <!-- End of Students Section -->
+
+        <!-- Message Handler -->
+
+        <?php 
+        
+            if(($err = isset($_GET["err"])) || isset($_GET["success"])){
+                include_once(__DIR__ . "/message_display.php");
+            }
+
+        ?>
+
+        <!-- End of Message Handler -->
+
+        <!-- "Add new student" button -->
+
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4">
@@ -98,93 +71,18 @@ else{
             <div class="col-md-4">
             </div>
         </div>
-        <!-- End of Students Section -->
         
+        <!-- End of "Add new student" button -->
+
         <hr>
 
         <!-- Groups Section -->
-        <h2 class="text-center mt-2 my-font"> Project Groups</h2>
-        <div class="row" id="edit">
-            <?php foreach($projectGroups as $group): ?>
-                <?php 
-                    $groupIsFull = $group->getStudent_count() === $maxStudents;    
-                ?>
-                <div class="col-md-6 mt-2 mb-2">
 
-                    <div class="card <?php if($groupIsFull) echo 'full-group'; ?>" id="<?php echo $group->getId(); ?>">  
+        <?php include_once(__DIR__ . "/project-page/project_groups.php"); ?>
 
-                        <div class="card-header my-card-header <?php if($groupIsFull) echo 'full-group-card-header'; ?>">
-                            <template v-if="groupsEditMode['group_<?php echo $group->getId(); ?>']">
-                                <input class="form-control" type="text" name="groupName" id="" placeholder="<?php echo $group->getName(); ?>">    
-                            </template>
-                            <template v-else>
-                                <h5><?php echo $group->getName(); ?></h5>
-                            </template>
-                            <a href="#" @click.prevent="fillGroupsEditMode($event)"><i class="fas fa-edit ml-2 pt-2" id="group" name="<?php echo $group->getId(); ?>"></i></a>
-                        </div>
-
-                        <div class="card-body">
-                            <?php 
-                                $groupStudents = $studentsLoader->getGroupStudents($group->getId()); 
-                                $groupStudentsCount = count($groupStudents);
-
-                                $notGroupStudents = $studentsLoader->getNotGroupStudents($_GET["id"], $group->getId());
-                                $i = 0;
-                            ?>
-
-                            <?php for($j = 0; $j < $maxStudents; $j++): ?>
-                                <div class="my-card-body">
-                                    <!-- If clicked on edit -->
-                                    <template v-if="groupsEditMode['group_<?php echo $group->getId(); ?>']">
-                                        <?php if($i < $groupStudentsCount): ?>
-                                            <form action="includes/remove_student_from_group.inc.php" method="post" id="remove_<?php echo $group->getId() . "_" . $groupStudents[$i]->getId(); ?>" class="my-card-body" style="width: 100%">
-                                                <label for="" class="form-control mb-3"><span><?php echo $groupStudents[$i]; ?></span></label>
-
-                                                <a role="button" href="javascript:void(0)" onclick="document.getElementById('remove_<?php echo $group->getId() . "_" . $groupStudents[$i]->getId(); ?>').submit()"><i class="fas fa-minus-circle remove-from-group-btn"></i></a>
-
-                                                <input type="hidden" name="student_id" value="<?php echo $groupStudents[$i]->getId(); ?>" />
-                                                <input type="hidden" name="group_id" value="<?php echo $group->getId(); ?>" />
-                                                <input type="hidden" name="project_id" value="<?php echo $_GET["id"]; ?>" />
-                                            </form>
-                                        <?php else: ?>
-                                            <label for="" class="form-control mb-3"><span>-</span></label>
-                                        <?php endif; ?>
-                                    </template>
-
-                                    <!-- If not clicked on edit -->
-                                    <template v-else>
-                                        <?php if($i < $groupStudentsCount): ?>
-                                            <label class="form-control mb-3"><span><?php echo $groupStudents[$i]; ?></span></label>
-                                        <?php else: ?>
-                                            <form action="includes/add_student_to_group.inc.php" method="post" style="width: 100%">
-                                                <select class="form-control mb-3" name="student_id" onchange="this.form.submit()">
-                                                    <option value="#">-</option>
-                                                    <?php foreach($notGroupStudents as $student): ?>
-                                                        <option value="<?php echo $student->getId(); ?>"><?php echo $student; ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-
-                                                <input type="hidden" name="group_id" value="<?php echo $group->getId(); ?>" />
-                                                <input type="hidden" name="project_id" value="<?php echo $_GET["id"]; ?>" />
-                                            </form>
-                                        <?php endif; ?>
-                                    </template>
-                                </div>
-                                <?php $i++; ?>
-                            <?php endfor; ?>
-
-                            <?php if($groupIsFull): ?>
-                                <div class="full-group-msg"><i class="fas fa-bell" style="font-size: 1.5rem;"></i> <strong>Group is full</strong></div>
-                            <?php endif; ?>
-                        </div>
-
-                    </div>
-
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <!-- End of Students Section -->
+        <!-- End of Groups Section -->
     </div>
+
     <script type="text/javascript">
         // window.onload = function(){
         //     setTimeout(() => {
@@ -192,6 +90,7 @@ else{
         //     }, 10000);
         // }
     </script>
+
     <script type="text/x-template" id="modal-template">
         <transition name="modal">
             <div class="modal-mask">
@@ -245,6 +144,7 @@ else{
             </div>
         </transition>
     </script>
+
     <script src="./js/script.js"></script>
 </body>
 </html>

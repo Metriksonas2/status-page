@@ -28,7 +28,7 @@ if(isset($_POST["project_id"])){
         }
 
         if($stmt->execute()){
-            header("location: ../project.php?id=" . $project_id . "&msg=studentdeleted");
+            header("location: ../project.php?id=" . $project_id . "&success=" . MessageHandler::SUCCESS_STUDENT_DELETED);
         }
         else{
             echo "Something went wrong. Please try again later.";

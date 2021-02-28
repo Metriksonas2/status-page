@@ -64,13 +64,13 @@ class GroupsStorage{
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(":project_id", $project_id, PDO::PARAM_INT);
         $stmt->bindParam(":max_students", $max_students, PDO::PARAM_INT);
-        
-        if($stmt->execute()){
+
+        try {
+            $stmt->execute();
             $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $groups;
-        }
-        else{
-            echo "Fetch Error: " . $stmt->error;
+        } catch (PDOException $e) {
+            die("Fetch Error: " . $e->getMessage());
         }
     }
 

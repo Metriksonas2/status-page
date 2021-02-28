@@ -39,6 +39,9 @@ class StudentsLoader{
         return $this->addStudentsToArray($fetchedStudents);
     }
 
+    public function studentExists($first_name, $last_name, $project_id){
+        return $this->studentsStorage->checkIfStudentExists($first_name, $last_name, $project_id);
+    }
     
     private function convertStudentToObject($student){
         $groupName = $this->getStudentGroupName($student["id"]);

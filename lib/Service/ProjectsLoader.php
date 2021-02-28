@@ -30,6 +30,10 @@ class ProjectsLoader{
         return $this->convertProjectToObject($singleProject);
     }
 
+    public function projectExists($project_id){
+        return $this->projectsStorage->checkIfProjectExists($project_id);
+    }
+
     /**
      * Converts array project object to Project object
      *

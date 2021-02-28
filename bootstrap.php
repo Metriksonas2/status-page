@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . "/lib/Service/ServiceContainer.php");
+require_once(__DIR__ . "/lib/Service/MessageHandler.php");
 
 require_once(__DIR__ . "/lib/Service/StudentsStorage.php");
 require_once(__DIR__ . "/lib/Service/StudentsLoader.php");

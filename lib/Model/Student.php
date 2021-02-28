@@ -5,8 +5,8 @@ class Student{
     private $id;
     private $first_name;
     private $last_name;
-    private $group_id;
     private $group;
+    private $group_id;
 
     public function __construct($id, $first_name, $last_name, $group_id, $group)
     {
@@ -70,15 +70,11 @@ class Student{
     }
 
     /**
-     * Set the value of group
-     *
-     * @return  self
+     * Get the value of groupId
      */ 
-    public function setGroup($group)
+    public function getGroup_id()
     {
-        $this->group = $group;
-
-        return $this;
+        return $this->group_id;
     }
 
     /**
@@ -87,14 +83,6 @@ class Student{
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get the value of groupId
-     */ 
-    public function getGroup_id()
-    {
-        return $this->group_id;
     }
 }
 

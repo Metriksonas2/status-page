@@ -25,6 +25,19 @@
     padding-bottom: 1.5rem !important;
 }
 
+.message{
+    text-align: center; 
+    margin: 10px 0 20px 0; 
+}
+
+.message-error{
+    color: red;
+}
+
+.message-success{
+    color: green;
+}
+
 .my-card-header{
     display: flex; 
     justify-content: space-between;

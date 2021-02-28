@@ -46,4 +46,21 @@ class ProjectsStorage{
             echo "Fetch Error: " . $stmt->error;
         }
     }
+
+    public function checkIfProjectExists($project_id){
+        $sql = "SELECT * FROM projects WHERE id = :project_id;";
+
+        if($stmt = $this->pdo->prepare($sql)){
+
+            $stmt->bindParam(":project_id", $project_id, PDO::PARAM_INT);
+
+            try {
+                $stmt->execute();
+                
+                return $stmt->rowCount() > 0;
+            } catch (PDOException $e) {
+                die("Fetch Error: " . $e->getMessage());
+            }
+        }
+    }
 }
