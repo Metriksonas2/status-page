@@ -19,9 +19,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     // Body of the request
     $body = json_decode(file_get_contents("php://input"));
 
-    $first_name = trim($body->first_name);
-    $last_name = trim($body->last_name);
-    $project_id = intval($body->project_id);
+    $first_name = property_exists($body, "first_name") ? trim($body->first_name) : null;
+    $last_name = property_exists($body, "last_name") ? trim($body->last_name) : null;
+    $project_id = property_exists($body, "project_id") ? intval($body->project_id) : null;
     $group_id = null;
     $group_is_full = false;
 
@@ -33,7 +33,12 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         $group_is_full = $group->getStudent_count() === $project->getMax_students();
     }
 
-    if(!empty($first_name) && !empty($last_name) && $project_id > 0){
+    if($first_name === null || $last_name === null || $project_id === null){
+        echo json_encode(array(
+            "error" => MessageHandler::getMessage(MessageHandler::ERR_MISSING_ARGUMENTS)
+        ));
+    }
+    else if(!empty($first_name) && !empty($last_name) && $project_id > 0){
 
         if($group_is_full){
             echo json_encode(array(

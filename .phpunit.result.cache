@@ -1,1 +1,1 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":148:{a:2:{s:7:"defects";a:1:{s:38:"StudentsLoaderTest::testDeletesStudent";i:4;}s:5:"times";a:1:{s:38:"StudentsLoaderTest::testDeletesStudent";d:0.022;}}}
+C:37:"PHPUnit\Runner\DefaultTestResultCache":201:{a:2:{s:7:"defects";a:1:{s:38:"StudentsLoaderTest::testDeletesStudent";i:4;}s:5:"times";a:2:{s:38:"StudentsLoaderTest::testDeletesStudent";d:0.022;s:37:"StudentsLoaderTest::testDeleteStudent";d:0.011;}}}

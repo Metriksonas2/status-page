@@ -19,7 +19,8 @@ require_once(__DIR__ . "/lib/Service/GroupsLoader.php");
 require_once(__DIR__ . "/lib/Model/Group.php");
 
 $db_host = "127.0.0.1";
-$db_name = "status_page";
+// $db_name = "status_page";
+$db_name = "check";
 $db_user = "root";
 $db_pass = "";
 

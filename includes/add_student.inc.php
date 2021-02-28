@@ -5,7 +5,7 @@ require_once("../bootstrap.php");
 $serviceContainer = new ServiceContainer($configuration);
 $studentsLoader = $serviceContainer->getStudentsLoader();
 
-if($_SERVER["REQUEST_METHOD"] === "POST"){
+if($_SERVER["REQUEST_METHOD"] == "POST"){
     $first_name = trim($_POST["first_name"]);
     $last_name = trim($_POST["last_name"]);
     $project_id = $_POST["project_id"];

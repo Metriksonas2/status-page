@@ -21,6 +21,20 @@
     border-bottom: 1px solid rgb(0, 0, 0, 0.1);
 }
 
+.back-btn{
+    margin: 0 auto !important;
+}
+
+.back-btn > div{
+    background-color: #E9ECEF; 
+    border: none;
+}
+
+.back-btn > div > a{
+    text-decoration: none; 
+    font-weight: bold;
+}
+
 .bot-jumbotron{
     padding-bottom: 1.5rem !important;
 }

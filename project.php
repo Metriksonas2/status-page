@@ -32,6 +32,16 @@ else{
 <?php include_once("./header.php"); ?>
 
     <div class="container" id="app">
+        <!-- Back to all projects button -->
+
+        <div class="row back-btn">
+            <div class="col-md-12 text-right mb-3 form-control">
+                <a href="./index.php"><i class="fas fa-arrow-left"></i>&nbsp Back to all projects</a>
+            </div>
+        </div>
+
+        <!-- End of Back to all projects button -->
+
         <div class="jumbotron bot-jumbotron jumbotron-fluid text-center">
             <div class="container">
                 <h1 class="display-4 title-border-bottom"><?php echo $project->getTitle(); ?></h1>

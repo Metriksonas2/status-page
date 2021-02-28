@@ -201,15 +201,16 @@ class StudentsStorage extends Storage{
 
         if($stmt = $this->pdo->prepare($sql)){
 
-            $stmt->bindParam(":first_name", $first_name, PDO::PARAM_INT);
-            $stmt->bindParam(":last_name", $last_name, PDO::PARAM_INT);
+            $stmt->bindParam(":first_name", $first_name, PDO::PARAM_STR);
+            $stmt->bindParam(":last_name", $last_name, PDO::PARAM_STR);
             $stmt->bindParam(":project_id", $project_id, PDO::PARAM_INT);
 
             try {
                 $stmt->execute();
                 
                 return $stmt->rowCount() > 0;
-            } catch (PDOException $e) {
+            } 
+            catch (PDOException $e) {
                 die("Fetch Error: " . $e->getMessage());
             }
         }

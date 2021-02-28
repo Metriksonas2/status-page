@@ -1,4 +1,4 @@
-<h2 class="text-center">Your Projects</h2>
+<h2 class="text-center mt-3 mb-4">Your Projects</h2>
 <div class="row" id="group">
     <?php if($projectsLoader->getCount() == 0): ?>
         <table class="table">
@@ -37,7 +37,7 @@
                         $projectMaxStudents = $project->getMax_students();
                     ?>
                     <tr>
-                        <td><a href="<?php echo "project.php?id=" . $projectId; ?>"><?php echo $projectTitle; ?></a></td>
+                        <td><a href="<?php echo "project.php?id=" . $projectId; ?>" style="font-size: 1.05rem; text-decoration: none"><?php echo $projectTitle; ?></a></td>
                         <td><?php echo $projectGroupCount; ?></td>
                         <td><?php echo $projectMaxStudents; ?></td>
                     </tr>
