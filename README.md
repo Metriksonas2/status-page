@@ -2,7 +2,7 @@
 
 ## Task
 
-![Task](./Images/Task.png)
+![Task](./images/Task.png)
 
 ---
 
@@ -10,7 +10,7 @@
 
 Some of the **task requirements** were challenging and interesting to create.
 
-![Requirements](./Images/Requirements.png)
+![Requirements](./images/Requirements.png)
 
 I have implemented all functional requirements. The hardest task was 5th one, when I needed to implement student assignment to groups. I was creating bunch of solutions regarding this one, but I have managed to choose similar approach as per provided mockup.
 
@@ -48,7 +48,7 @@ My project has 2 main pages: `index.php` and `project.php`
 
 In the main page you will be able to create as many projects as you want.
 
-![MainPage](./Images/MainPage.png)
+![MainPage](./images/MainPage.png)
 
 &nbsp;
 
@@ -60,7 +60,7 @@ To create a project, you will need to enter:
  
 * Maximum number of student in group (*maximum of 10*) 
 
-![CreateProjectModal](./Images/CreateProjectModal.png)
+![CreateProjectModal](./images/CreateProjectModal.png)
 
 ---
 
@@ -68,7 +68,7 @@ To create a project, you will need to enter:
 
 In the **project** page, you will be able to manage chosen project.
 
-![AboutProject](./Images/AboutProject.png)
+![AboutProject](./images/AboutProject.png)
 
 At the top of the page, you will see:
 
@@ -80,7 +80,7 @@ At the top of the page, you will see:
 
 Below, you will see the list of all students of the project.
 
-![ProjectStudents](./Images/ProjectStudents.png)
+![ProjectStudents](./images/ProjectStudents.png)
 
 Here, you can add and delete students. Also, each student's group will be visible (*`"No group"`, if not in a group*).
 
@@ -94,13 +94,13 @@ To add new student, you will need to enter:
  
 * Group (*optional*) 
 
-![AddNewStudent](./Images/AddNewStudent.png)
+![AddNewStudent](./images/AddNewStudent.png)
 
 &nbsp;
 
 Main section of the page is here. Here, you can manage your project groups, assign and remove students from them.
 
-![ProjectStudents](./Images/ProjectGroups.png)
+![ProjectGroups](./images/ProjectGroups.png)
 
 As you can see, groups are auto generated, when project is being created (*In this example project - **number of groups: 4** | **max amount of students in group: 3***).
 When the group is full, it's being highlighted and it's really noticable, that the group is full.
@@ -109,7 +109,7 @@ When the group is full, it's being highlighted and it's really noticable, that t
 
 To add student to the group, you will need to choose student from the dropdown list here:
 
-![ProjectStudents](./Images/Dropdown.png)
+![Dropdown](./images/Dropdown.png)
 
 As you can see, current students of the group are not displayed in the list, and students, that are in the other groups have their group name shown.
 
@@ -119,11 +119,11 @@ As you can see, current students of the group are not displayed in the list, and
 
 You can edit group by clicking here:
 
-![ProjectStudents](./Images/EditPen.png)
+![EditPen](./images/EditPen.png)
 
 After that, group will be in edit mode and you will be able to remove students from the group:
 
-![ProjectStudents](./Images/EditMode.png)
+![EditMode](./images/EditMode.png)
 
 P.S. There is a text input field in group name's place in edit mode, that should allow changing the name of the group, however I haven't yet implemented it, so that will be implemented in the near future [:)]
 
@@ -133,7 +133,7 @@ P.S. There is a text input field in group name's place in edit mode, that should
 
 I have managed to complete 2 out of 3 **bonus requirements**.
 
-![BonusRequirements](./Images/BonusRequirements.png)
+![BonusRequirements](./images/BonusRequirements.png)
 
 **Bonus requirements summary:**
 
@@ -172,15 +172,15 @@ For checking POST request in **Postman** *(or other software)* add header:
 }
 ```
 
-![BonusRequirements](./Images/API_Example_1.png)
+![API_Example_1](./images/API_Example_1.png)
 
 &nbsp;
 
 **Response:**
 
-![BonusRequirements](./Images/API_Example_1_Response.png)
+![API_Example_1_Response](./images/API_Example_1_Response.png)
 
-![BonusRequirements](./Images/API_Example_1_Student.png)
+![API_Example_1_Student](./images/API_Example_1_Student.png)
 
 &nbsp;
 
@@ -195,15 +195,15 @@ For checking POST request in **Postman** *(or other software)* add header:
 }
 ```
 
-![BonusRequirements](./Images/API_Example_2.png)
+![API_Example_2](./images/API_Example_2.png)
 
 &nbsp;
 
 **Response:**
 
-![BonusRequirements](./Images/API_Example_1_Response.png)
+![API_Example_1_Response](./images/API_Example_1_Response.png)
 
-![BonusRequirements](./Images/API_Example_2_Student.png)
+![API_Example_2_Student](./images/API_Example_2_Student.png)
 
 As you can see, with optional **group_id** paramater, new student was added to **Group #1** (*id: 1*) as well.
 
@@ -215,7 +215,7 @@ To launch unit test for `/tests/unit/StudentsLaoderTest.php` file:
 
 * Open up a terminal from the home path. For example:
 
-![BonusRequirements](./Images/Terminal_1.png)
+![Terminal_1](./images/Terminal_1.png)
 
 * And there, execute this command to run tests within `/tests/unit`:
 ```
@@ -226,7 +226,7 @@ To launch unit test for `/tests/unit/StudentsLaoderTest.php` file:
 
 After that, you should be able to see test results:
 
-![BonusRequirements](./Images/Terminal_2.png)
+![Terminal_2](./images/Terminal_2.png)
 
 ---
 
