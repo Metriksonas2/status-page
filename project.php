@@ -93,14 +93,6 @@ else{
         <!-- End of Groups Section -->
     </div>
 
-    <script type="text/javascript">
-        // window.onload = function(){
-        //     setTimeout(() => {
-        //         document.location.reload(true);
-        //     }, 10000);
-        // }
-    </script>
-
     <script type="text/x-template" id="modal-template">
         <transition name="modal">
             <div class="modal-mask">
