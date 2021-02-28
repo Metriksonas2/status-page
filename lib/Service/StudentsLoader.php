@@ -1,18 +1,17 @@
 <?php 
 
-class StudentsLoader{
+class StudentsLoader extends Loader{
 
-    private $studentsStorage;
     private $studentsCount;
     private $projectStudentsCount;
 
     public function __construct(StudentsStorage $studentsStorage)
     {
-        $this->studentsStorage = $studentsStorage;
+        parent::__construct($studentsStorage);
     }
 
     public function getStudents(){
-        $fetchedStudents = $this->studentsStorage->fetchAll();
+        $fetchedStudents = $this->storage->fetchAll();
 
         $this->studentsCount = count($fetchedStudents);
 
@@ -20,7 +19,7 @@ class StudentsLoader{
     }
 
     public function getProjectStudents($project_id){
-        $fetchedStudents = $this->studentsStorage->fetchProjectStudents($project_id);
+        $fetchedStudents = $this->storage->fetchProjectStudents($project_id);
 
         $this->projectStudentsCount = count($fetchedStudents);
 
@@ -28,22 +27,38 @@ class StudentsLoader{
     }
 
     public function getGroupStudents($group_id){
-        $fetchedStudents = $this->studentsStorage->fetchGroupStudents($group_id);
+        $fetchedStudents = $this->storage->fetchGroupStudents($group_id);
 
         return $this->addStudentsToArray($fetchedStudents);
     }
 
     public function getNotGroupStudents($project_id, $group_id){
-        $fetchedStudents = $this->studentsStorage->fetchNotGroupStudents($project_id, $group_id);
+        $fetchedStudents = $this->storage->fetchNotGroupStudents($project_id, $group_id);
 
         return $this->addStudentsToArray($fetchedStudents);
     }
 
+    public function addNewStudent($first_name, $last_name, $project_id, $group_id){
+        return $this->storage->addNewStudent($first_name, $last_name, $project_id, $group_id);
+    }
+
+    public function addStudentToGroup($student_id, $group_id){
+        return $this->storage->addStudentToGroup($student_id, $group_id);
+    }
+
+    public function removeStudentFromGroup($student_id, $group_id){
+        return $this->storage->removeStudentFromGroup($student_id, $group_id);
+    }
+
+    public function deleteStudentFromProject($project_id, $group_id){
+        return $this->storage->deleteStudent($project_id, $group_id);
+    }
+
     public function studentExists($first_name, $last_name, $project_id){
-        return $this->studentsStorage->checkIfStudentExists($first_name, $last_name, $project_id);
+        return $this->storage->checkIfStudentExists($first_name, $last_name, $project_id);
     }
     
-    private function convertStudentToObject($student){
+    protected function convertToObject($student){
         $groupName = $this->getStudentGroupName($student["id"]);
         
         $newStudent = new Student($student["id"], $student["first_name"], $student["last_name"], $student["group_id"], $groupName);
@@ -55,14 +70,14 @@ class StudentsLoader{
         $students_arr = [];
 
         foreach($students as $student){
-            $students_arr[] = $this->convertStudentToObject($student);
+            $students_arr[] = $this->convertToObject($student);
         }
 
         return $students_arr;
     }
 
     private function getStudentGroupName($student_id){
-        return $this->studentsStorage->fetchStudentGroupName($student_id)["name"];
+        return $this->storage->fetchStudentGroupName($student_id)["name"];
     }
 
     /**

@@ -5,6 +5,8 @@ class MessageHandler{
     const ERR_NO_SUCH_PROJECT = "nosuchproject";
     const ERR_NO_PROJECT_CHOSEN = "noprojectchosen";
     const ERR_STUDENT_EXISTS = "studentexists";
+    const ERR_INCORRECT_DATA = "incorrectdata";
+    const ERR_GROUP_IS_FULL = "groupisfull";
 
     const SUCCESS_PROJECT_ADDED = "projectadded";
     const SUCCESS_STUDENT_ADDED = "studentadded";
@@ -27,6 +29,8 @@ class MessageHandler{
             self::ERR_NO_SUCH_PROJECT => "There is no such project",
             self::ERR_NO_PROJECT_CHOSEN => "None of the projects were chosen",
             self::ERR_STUDENT_EXISTS => "Student with such name exists",
+            self::ERR_INCORRECT_DATA => "Incorrect data",
+            self::ERR_GROUP_IS_FULL => "Group is full",
             self::SUCCESS_PROJECT_ADDED => "Project was added successfully!",
             self::SUCCESS_STUDENT_ADDED => "Student was added!",
             self::SUCCESS_STUDENT_DELETED => "Student was deleted"

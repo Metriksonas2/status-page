@@ -1,12 +1,10 @@
 <?php 
 
-class ProjectsStorage{
-
-    private $pdo;
+class ProjectsStorage extends Storage{
 
     public function __construct($pdo)
     {
-        $this->pdo = $pdo;
+        parent::__construct($pdo);
     }
 
     /**
@@ -26,7 +24,7 @@ class ProjectsStorage{
     }
 
     /**
-     * Returns array of all projects
+     * Returns array of single project
      *
      * @return array
      */
@@ -44,6 +42,26 @@ class ProjectsStorage{
         }
         else{
             echo "Fetch Error: " . $stmt->error;
+        }
+    }
+
+    public function addNewProject($title, $groups_count, $max_students){
+        $sql = "INSERT INTO projects (title, groups_count, max_students) VALUES (:title, :groups_count, :max_students);";
+
+        if($stmt = $this->pdo->prepare($sql)){
+            $stmt->bindParam(":title", $title, PDO::PARAM_STR);
+            $stmt->bindParam(":groups_count", $groups_count, PDO::PARAM_INT);
+            $stmt->bindParam(":max_students", $max_students, PDO::PARAM_INT);
+
+            try {
+                $stmt->execute();
+    
+                // Return last inserted ID, so that it could be passed for adding pre-made groups with that ID
+                return $this->pdo->lastInsertId();
+            } 
+            catch (PDOException $e) {
+                die("Insert Error: " . $e->getMessage());
+            }
         }
     }
 

@@ -2,6 +2,9 @@
 
 require_once(__DIR__ . "/lib/Service/ServiceContainer.php");
 require_once(__DIR__ . "/lib/Service/MessageHandler.php");
+require_once(__DIR__ . "/lib/Service/Storage.php");
+require_once(__DIR__ . "/lib/Service/Loader.php");
+
 
 require_once(__DIR__ . "/lib/Service/StudentsStorage.php");
 require_once(__DIR__ . "/lib/Service/StudentsLoader.php");

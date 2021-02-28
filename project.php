@@ -42,7 +42,7 @@ else{
 
         <!-- Students Section -->
         
-        <?php include_once(__DIR__ . "/project-page/project_students.php"); ?>
+        <?php include_once(__DIR__ . "/pages/project-page/project_students.php"); ?>
 
         <!-- End of Students Section -->
 
@@ -78,7 +78,7 @@ else{
 
         <!-- Groups Section -->
 
-        <?php include_once(__DIR__ . "/project-page/project_groups.php"); ?>
+        <?php include_once(__DIR__ . "/pages/project-page/project_groups.php"); ?>
 
         <!-- End of Groups Section -->
     </div>

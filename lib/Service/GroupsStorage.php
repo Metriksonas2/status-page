@@ -1,12 +1,10 @@
 <?php 
 
-class GroupsStorage{
-
-    private $pdo;
+class GroupsStorage extends Storage{
 
     public function __construct($pdo)
     {
-        $this->pdo = $pdo;
+        parent::__construct($pdo);
     }
 
     /**
@@ -69,7 +67,8 @@ class GroupsStorage{
             $stmt->execute();
             $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $groups;
-        } catch (PDOException $e) {
+        } 
+        catch (PDOException $e) {
             die("Fetch Error: " . $e->getMessage());
         }
     }
@@ -85,7 +84,10 @@ class GroupsStorage{
         $stmt = $this->pdo->prepare($sql);
         try {
             $stmt->execute();
-        } catch (PDOException $e) {
+
+            return true;
+        } 
+        catch (PDOException $e) {
             die("Insert Error: " . $e->getMessage());
         }
     }
