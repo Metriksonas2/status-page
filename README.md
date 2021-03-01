@@ -34,6 +34,12 @@ There are 2 database schema (`.sql`) files in `/resources` folder: `status_page.
 
 &nbsp;
 
+### **Database Configuration File**
+
+Database configuration file is `bootstrap.php`.
+
+&nbsp;
+
 ### **Files upload**
 
 Upload all project files to a web server and launch application in `"/"` route (it will start from `index.php` file).
